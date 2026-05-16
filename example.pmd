@@ -1,0 +1,22 @@
+{ popup
+# AroPresent
+
+Minimal, markdown-based slides.
+
+- Fast
+- Light
+- :sparkles:
+
+## Markdown
+
+**Bold**, _italic_, tables, and code fences:
+
+```python
+print("Hello from AroPresent")
+```
+
+## Navigation
+
+- Space / Right arrow: next slide
+- Backspace / Left arrow: previous slide
+- Escape: exit
