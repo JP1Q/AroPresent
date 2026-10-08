@@ -69,7 +69,16 @@ python main.py --mode editor
 
 ### Slide templates
 
-The editor's **Add Slide** menu is built from the Markdown files in `aropresent/slide_templates/`. The number sets the order and the rest is the name, so `4-two-columns.md` shows up fourth as "Two Columns Slide". Add, edit, or delete files there and refresh the editor.
+The editor's **Add Slide** menu is built from the Markdown files in `aropresent/slide_templates/`. Their order and menu labels come from `templates.json` in the same folder:
+
+```json
+[
+  { "file": "empty.md", "label": "Empty Slide" },
+  { "file": "title.md", "label": "Title Slide" }
+]
+```
+
+To add a template, create the `.md` file and add a line for it to `templates.json`; to reorder, move the lines. Refresh the editor to see changes.
 
 ## Present a .pmd file
 

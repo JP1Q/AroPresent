@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>__TITLE__ - Editor</title>
+  <link rel="stylesheet" href="/static/editor/css/base.css" />
+  <link rel="stylesheet" href="/static/editor/css/header.css" />
+  <link rel="stylesheet" href="/static/editor/css/sidebar.css" />
+  <link rel="stylesheet" href="/static/editor/css/source.css" />
+  <link rel="stylesheet" href="/static/editor/css/preview.css" />
+  <link rel="stylesheet" href="/static/editor/css/animations.css" />
+  <link rel="stylesheet" href="/static/editor/css/content.css" />
+</head>
+<body>
+  <header>
+    <div class="brand">AroPresent Editor</div>
+    <div class="controls">
+      <select id="template">
+        <option value="">Add Slide...</option>
+      </select>
+      <select id="transitionSelect">
+        <option value="none">Slide: None</option>
+        <option value="fade">Slide: Fade</option>
+        <option value="popup">Slide: Popup</option>
+        <option value="slide-right">Slide: Slide Right</option>
+      </select>
+      <select id="textAnimSelect">
+        <option value="none">Text: None</option>
+        <option value="anim-fade">Text: Fade</option>
+        <option value="anim-pop">Text: Popup</option>
+        <option value="anim-right">Text: Slide Right</option>
+      </select>
+      <button id="deleteBtn">Delete Slide</button>
+      <label for="loadPmd" class="file-label">Load .pmd</label>
+      <input type="file" id="loadPmd" accept=".pmd" />
+      <button id="savePmd">Save .pmd</button>
+      <button id="prev">Prev</button>
+      <button id="next">Next</button>
+      <button id="presentBtn">Present</button>
+    </div>
+  </header>
+  <main>
+    <aside>
+      <div class="sidebar-title">Slides</div>
+      <div id="slides"></div>
+    </aside>
+    <div class="editor-col">
+      <div class="col-header">
+        <span>Markdown Source</span>
+        <span id="counter"></span>
+      </div>
+      <textarea id="source" spellcheck="false"></textarea>
+    </div>
+    <div class="preview-col">
+      <div class="col-header">Live Format Preview</div>
+      <div class="preview-wrapper">
+        <div class="preview-screen">
+          <div id="slide" class="slide-view" style="overflow: hidden"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="/static/editor/js/dom.js"></script>
+  <script src="/static/editor/js/state.js"></script>
+  <script src="/static/editor/js/render.js"></script>
+  <script src="/static/editor/js/storage.js"></script>
+  <script src="/static/editor/js/templates.js"></script>
+  <script src="/static/editor/js/editing.js"></script>
+  <script src="/static/editor/js/files.js"></script>
+  <script src="/static/editor/js/navigation.js"></script>
+  <script src="/static/editor/js/main.js"></script>
+</body>
+</html>

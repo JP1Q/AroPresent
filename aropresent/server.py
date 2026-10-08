@@ -6,7 +6,13 @@ from urllib.parse import urlparse
 
 from .parser import SlideParser, SlideDeck
 from .renderer import MarkdownRenderer
-from .templates import HTML_DIR, build_editor_html, build_present_html, load_slide_templates
+from .templates import VIEWS_DIR, build_editor_html, build_present_html, load_slide_templates
+
+STATIC_TYPES = {
+    ".css": "text/css; charset=utf-8",
+    ".js": "text/javascript; charset=utf-8",
+}
+
 
 class WebServerApp:
     def __init__(self, deck: SlideDeck | None, title: str, port: int, mode: str, open_browser: bool) -> None:
@@ -96,12 +102,13 @@ class WebServerApp:
                 self.wfile.write(html.encode("utf-8"))
 
             def _send_static(self, name: str) -> None:
-                file = HTML_DIR / name
-                if "/" in name or file.suffix != ".css" or not file.is_file():
+                file = (VIEWS_DIR / name).resolve()
+                content_type = STATIC_TYPES.get(file.suffix)
+                if content_type is None or not file.is_relative_to(VIEWS_DIR) or not file.is_file():
                     self._send_text("Not found", HTTPStatus.NOT_FOUND)
                     return
                 self.send_response(HTTPStatus.OK)
-                self.send_header("Content-Type", "text/css; charset=utf-8")
+                self.send_header("Content-Type", content_type)
                 self.end_headers()
                 self.wfile.write(file.read_bytes())
 

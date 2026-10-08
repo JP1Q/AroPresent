@@ -1,0 +1,73 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.slide-view.fade {
+  animation: fadeIn 0.3s ease both;
+}
+
+.slide-view.popup {
+  animation: scaleUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.slide-view.slide-right {
+  animation: slideInRight 0.3s ease both;
+}
+
+.slide-view .animate-item {
+  opacity: 0;
+}
+
+.slide-view .animate-item.animated-visible {
+  opacity: 1;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.slide-view.anim-fade .animate-item.animated-visible {
+  opacity: 1;
+}
+
+.slide-view.anim-pop .animate-item {
+  transform: scale(0.9);
+}
+
+.slide-view.anim-pop .animate-item.animated-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.slide-view.anim-right .animate-item {
+  transform: translateX(20px);
+}
+
+.slide-view.anim-right .animate-item.animated-visible {
+  opacity: 1;
+  transform: translateX(0);
+}

@@ -1,0 +1,8 @@
+[
+  { "file": "empty.md", "label": "Empty Slide" },
+  { "file": "title.md", "label": "Title Slide" },
+  { "file": "bullets.md", "label": "Bullets Slide" },
+  { "file": "image.md", "label": "Image Slide" },
+  { "file": "two-columns.md", "label": "Two Columns Slide" },
+  { "file": "code.md", "label": "Code Slide" }
+]

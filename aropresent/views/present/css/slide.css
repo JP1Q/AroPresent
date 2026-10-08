@@ -1,0 +1,22 @@
+.slide-view {
+  padding: 60px;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: auto;
+  font-size: 36px;
+  display: none;
+  container-type: size;
+}
+
+.slide-view img {
+  max-width: 100%;
+  max-height: 80cqh;
+  height: auto;
+  object-fit: contain;
+  vertical-align: middle;
+}
+
+.slide-view.active {
+  display: block;
+}
