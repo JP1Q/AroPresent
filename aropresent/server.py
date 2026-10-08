@@ -6,8 +6,7 @@ from urllib.parse import urlparse
 
 from .parser import SlideParser, SlideDeck
 from .renderer import MarkdownRenderer
-from .templates import build_editor_html, build_present_html
-
+from .templates import HTML_DIR, build_editor_html, build_present_html, load_slide_templates
 
 class WebServerApp:
     def __init__(self, deck: SlideDeck | None, title: str, port: int, mode: str, open_browser: bool) -> None:
@@ -41,7 +40,7 @@ class WebServerApp:
         deck = self._deck
 
         class Handler(BaseHTTPRequestHandler):
-            def do_GET(self):  # noqa: N802
+            def do_GET(self):
                 path = urlparse(self.path).path
                 if path == "/":
                     self._send_html(build_editor_html(title))
@@ -56,9 +55,15 @@ class WebServerApp:
                     slides_data = [{"html": renderer.render(slide.content), "animation": slide.animation} for slide in deck.slides]
                     self._send_json({"slides": slides_data})
                     return
+                if path == "/slide_templates":
+                    self._send_json({"templates": load_slide_templates()})
+                    return
+                if path.startswith("/static/"):
+                    self._send_static(path[len("/static/"):])
+                    return
                 self._send_text("Not found", HTTPStatus.NOT_FOUND)
 
-            def do_POST(self):  # noqa: N802
+            def do_POST(self):
                 path = urlparse(self.path).path
                 if path == "/render":
                     length = int(self.headers.get("Content-Length", "0"))
@@ -90,6 +95,16 @@ class WebServerApp:
                 self.end_headers()
                 self.wfile.write(html.encode("utf-8"))
 
+            def _send_static(self, name: str) -> None:
+                file = HTML_DIR / name
+                if "/" in name or file.suffix != ".css" or not file.is_file():
+                    self._send_text("Not found", HTTPStatus.NOT_FOUND)
+                    return
+                self.send_response(HTTPStatus.OK)
+                self.send_header("Content-Type", "text/css; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(file.read_bytes())
+
             def _send_text(self, text: str, status: HTTPStatus = HTTPStatus.OK) -> None:
                 self.send_response(status)
                 self.send_header("Content-Type", "text/plain; charset=utf-8")
@@ -103,7 +118,7 @@ class WebServerApp:
                 self.end_headers()
                 self.wfile.write(data.encode("utf-8"))
 
-            def log_message(self, format, *args):  # noqa: A003
+            def log_message(self, format, *args):
                 return
 
         return Handler

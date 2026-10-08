@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>__TITLE__</title>
+  <link rel="stylesheet" href="/static/present.css" />
+</head>
+<body>
+  <div class="presentation-container">
+    <div id="presentation" class="slide-wrapper"></div>
+  </div>
+  <script>
+    const container = document.getElementById('presentation');
+    let slides = [];
+    let index = 0;
+    let textStep = 0;
+
+    function parseConfigs(animStr) {
+      const parts = (animStr || 'none none').split(' ');
+      return {
+        slide: parts[0] || 'none',
+        text: parts[1] || 'none'
+      };
+    }
+
+    function showSlide() {
+      const elements = container.querySelectorAll('.slide-view');
+      elements.forEach((el, i) => {
+        if (i === index) {
+          el.classList.add('active');
+          const animConfigs = parseConfigs(slides[index].animation);
+          const items = el.querySelectorAll('.animate-item');
+
+          if (animConfigs.text === 'none') {
+            items.forEach(item => item.classList.add('animated-visible'));
+            textStep = items.length;
+          } else {
+            items.forEach((item, k) => {
+              if (k < textStep) {
+                item.classList.add('animated-visible');
+              } else {
+                item.classList.remove('animated-visible');
+              }
+            });
+          }
+        } else {
+          el.classList.remove('active');
+        }
+      });
+    }
+
+    function initPresentation(data) {
+      slides = data.slides || [];
+      if (slides.length === 0) {
+        container.innerHTML = '<div class="slide-view active" style="text-align:center;">No slides to display</div>';
+        return;
+      }
+      container.innerHTML = '';
+      slides.forEach((slide) => {
+        const div = document.createElement('div');
+        const animConfigs = parseConfigs(slide.animation);
+        div.className = "slide-view " + animConfigs.slide + " " + animConfigs.text;
+        div.innerHTML = slide.html;
+
+        const items = div.querySelectorAll('li, p, pre, h1, h2, h3, img');
+        items.forEach(el => el.classList.add('animate-item'));
+
+        container.appendChild(div);
+      });
+      index = 0;
+      textStep = 0;
+      showSlide();
+    }
+
+    function loadSlides() {
+      fetch('/slides')
+        .then(res => {
+          if (!res.ok) throw new Error();
+          return res.json();
+        })
+        .then(data => initPresentation(data))
+        .catch(() => {
+          const saved = localStorage.getItem('aropresent_slides');
+          const savedAnims = localStorage.getItem('aropresent_anims');
+          if (saved && savedAnims) {
+            const rawSlides = JSON.parse(saved);
+            const anims = JSON.parse(savedAnims);
+            const pmd = rawSlides.map((s, i) => {
+              const anim = anims[i] || 'none none';
+              const prefix = anim === 'none none' ? '' : anim + '\n';
+              return "{\n" + prefix + s + "\n}";
+            }).join('\n');
+            fetch('/render', { method: 'POST', body: pmd })
+              .then(res => res.json())
+              .then(data => initPresentation(data));
+          } else {
+            container.innerHTML = '<div class="slide-view active" style="text-align:center;">No slides found</div>';
+          }
+        });
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (slides.length === 0) return;
+      const activeEl = container.querySelector('.slide-view.active');
+      const items = activeEl ? activeEl.querySelectorAll('.animate-item') : [];
+      const animConfigs = parseConfigs(slides[index].animation);
+
+      if (e.key === ' ' || e.key === 'ArrowRight') {
+        if (animConfigs.text !== 'none' && textStep < items.length) {
+          textStep++;
+          showSlide();
+        } else if (index < slides.length - 1) {
+          index++;
+          textStep = 0;
+          showSlide();
+        }
+      } else if (e.key === 'Backspace' || e.key === 'ArrowLeft') {
+        if (animConfigs.text !== 'none' && textStep > 0) {
+          textStep--;
+          showSlide();
+        } else if (index > 0) {
+          index--;
+          const prevEl = container.querySelectorAll('.slide-view')[index];
+          const prevItems = prevEl ? prevEl.querySelectorAll('.animate-item') : [];
+          const prevConfigs = parseConfigs(slides[index].animation);
+          textStep = prevConfigs.text !== 'none' ? prevItems.length : 0;
+          showSlide();
+        }
+      } else if (e.key === 'Escape') {
+        window.location.href = '/';
+      }
+    });
+
+    loadSlides();
+  </script>
+</body>
+</html>
