@@ -1,0 +1,71 @@
+/* The slide is always laid out at 1200x675 with 36px text, then scaled to fit
+   (see stage.js in each view), so the editor preview matches the presentation. */
+
+.slide-stage {
+  width: 1200px;
+  height: 675px;
+  flex: none;
+  transform: scale(var(--slide-scale, 1));
+}
+
+.slide-view {
+  width: 1200px;
+  height: 675px;
+  padding: 60px;
+  box-sizing: border-box;
+  overflow: hidden;
+  font-size: 36px;
+  container-type: size;
+}
+
+.slide-view img {
+  max-width: 100%;
+  max-height: 80cqh;
+  height: auto;
+  object-fit: contain;
+  vertical-align: middle;
+}
+
+.slide-view code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  background: #27272a;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 85%;
+}
+
+.slide-view pre code {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  font-size: 0.6111em; /* 22px at the 36px base; scales with \fontsize */
+}
+
+.slide-view pre {
+  background: #18181b;
+  padding: 24px;
+  border-radius: 8px;
+  overflow: auto;
+  border: 1px solid #27272a;
+}
+
+.slide-view ul,
+.slide-view ol {
+  margin-bottom: 24px;
+}
+
+.slide-view li {
+  margin-bottom: 12px;
+}
+
+.columns {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+.column {
+  min-width: 0;
+}

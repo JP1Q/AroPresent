@@ -52,6 +52,34 @@ Put `\col1`, `\col2`, ... on their own lines to split a slide into columns. Anyt
 }
 ```
 
+## Styled boxes
+
+`\d` starts a box and `\end` closes it. Style lines apply to the box they're in, or to the whole slide or a column when used outside a box:
+
+```
+{
+# Cats
+
+\d
+\fontsize{20}
+\color{orange}
+I LIKE CATS YK
+\end
+
+Normal text again.
+}
+```
+
+| Command | Effect |
+| --- | --- |
+| `\fontsize{N}` | Text size in presentation pixels (36 is normal); the editor preview scales it to match |
+| `\color{red}` | Text color |
+| `\bg{#222}` | Background |
+| `\align{center}` | Text alignment: `left`, `center`, `right` |
+| `\style{border: 1px solid; padding: 8px}` | Any CSS |
+
+Boxes can be nested, and `\col1`, `\col2`, ... inside a box split that box into columns.
+
 ## Run
 
 ```bash

@@ -7,10 +7,11 @@
   <link rel="stylesheet" href="/static/editor/css/base.css" />
   <link rel="stylesheet" href="/static/editor/css/header.css" />
   <link rel="stylesheet" href="/static/editor/css/sidebar.css" />
+  <link rel="stylesheet" href="/static/editor/css/resizer.css" />
   <link rel="stylesheet" href="/static/editor/css/source.css" />
+  <link rel="stylesheet" href="/static/shared/css/slide.css" />
   <link rel="stylesheet" href="/static/editor/css/preview.css" />
   <link rel="stylesheet" href="/static/editor/css/animations.css" />
-  <link rel="stylesheet" href="/static/editor/css/content.css" />
 </head>
 <body>
   <header>
@@ -45,6 +46,7 @@
       <div class="sidebar-title">Slides</div>
       <div id="slides"></div>
     </aside>
+    <div class="resizer" data-panel="sidebar" title="Drag to resize, double-click to reset"></div>
     <div class="editor-col">
       <div class="col-header">
         <span>Markdown Source</span>
@@ -52,17 +54,22 @@
       </div>
       <textarea id="source" spellcheck="false"></textarea>
     </div>
+    <div class="resizer" data-panel="editor" title="Drag to resize, double-click to reset"></div>
     <div class="preview-col">
       <div class="col-header">Live Format Preview</div>
       <div class="preview-wrapper">
         <div class="preview-screen">
-          <div id="slide" class="slide-view" style="overflow: hidden"></div>
+          <div class="slide-stage">
+            <div id="slide" class="slide-view" style="overflow: hidden"></div>
+          </div>
         </div>
       </div>
     </div>
   </main>
   <script src="/static/editor/js/dom.js"></script>
   <script src="/static/editor/js/state.js"></script>
+  <script src="/static/editor/js/stage.js"></script>
+  <script src="/static/editor/js/resize.js"></script>
   <script src="/static/editor/js/render.js"></script>
   <script src="/static/editor/js/storage.js"></script>
   <script src="/static/editor/js/templates.js"></script>

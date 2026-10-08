@@ -1,0 +1,32 @@
+/* Draggable dividers between the editor panels (see js/resize.js). */
+
+.resizer {
+  flex: none;
+  width: 9px;
+  margin: 0 -4px;
+  position: relative;
+  z-index: 1;
+  cursor: col-resize;
+  touch-action: none;
+}
+
+.resizer::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 3px;
+  width: 3px;
+  background: transparent;
+  transition: background 0.15s;
+}
+
+.resizer:hover::after,
+.resizer.dragging::after {
+  background: #52525b;
+}
+
+body.resizing {
+  cursor: col-resize;
+  user-select: none;
+}
