@@ -1,9 +1,16 @@
 import html
 import json
+import sys
 from pathlib import Path
 
-VIEWS_DIR = Path(__file__).resolve().parent / "views"
-SLIDE_TEMPLATES_DIR = Path(__file__).resolve().parent / "slide_templates"
+# Under PyInstaller the data files are unpacked to sys._MEIPASS, laid out as in the source tree.
+if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):
+    _PACKAGE_DIR = Path(sys._MEIPASS) / "aropresent"
+else:
+    _PACKAGE_DIR = Path(__file__).resolve().parent
+
+VIEWS_DIR = _PACKAGE_DIR / "views"
+SLIDE_TEMPLATES_DIR = _PACKAGE_DIR / "slide_templates"
 
 
 def _load(view: str, title: str) -> str:

@@ -26,6 +26,10 @@ window.addEventListener('keydown', (e) => {
       showSlide();
     }
   } else if (e.key === 'Escape') {
-    window.location.href = '/';
+    if (window.pywebview && window.pywebview.api) {
+      window.pywebview.api.close_present();
+    } else {
+      window.location.href = '/';
+    }
   }
 });

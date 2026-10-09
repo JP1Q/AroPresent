@@ -37,5 +37,9 @@ nextBtn.addEventListener('click', () => {
 });
 
 presentBtn.addEventListener('click', () => {
-  window.open('/present', '_blank');
+  if (window.pywebview && window.pywebview.api) {
+    window.pywebview.api.open_present();
+  } else {
+    window.open('/present', '_blank');
+  }
 });

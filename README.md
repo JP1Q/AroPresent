@@ -140,3 +140,24 @@ python main.py --mode present example.pmd
 ```bash
 python main.py --parse-only example.pmd
 ```
+
+## Desktop app
+
+AroPresent can run as a native window (macOS and Windows) using [pywebview](https://pywebview.flowrl.com/). It is the same editor, with native Open/Save dialogs for `.pmd` files; **Present** opens a fullscreen window and Esc closes it.
+
+```bash
+pip install -r requirements-desktop.txt
+python desktop.py
+```
+
+The app serves on port 47615 when it is free (so the editor's saved slides persist between launches), otherwise on a random port.
+
+### Build
+
+```bash
+pyinstaller AroPresent.spec
+```
+
+This produces `dist/AroPresent.app` on macOS and `dist/AroPresent.exe` on Windows. `docs/desktop-build.yml` is a GitHub Actions workflow (copy it to `.github/workflows/`) that builds both on a manual run or on `v*` tags and uploads them as artifacts.
+
+Builds are **not code-signed**, so macOS (Gatekeeper: right-click, Open) and Windows (SmartScreen: More info, Run anyway) show a security warning on first launch.

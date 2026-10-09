@@ -1,5 +1,6 @@
 import json
 import webbrowser
+from typing import Callable
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlparse
@@ -15,12 +16,14 @@ STATIC_TYPES = {
 
 
 class WebServerApp:
-    def __init__(self, deck: SlideDeck | None, title: str, port: int, mode: str, open_browser: bool) -> None:
+    def __init__(self, deck: SlideDeck | None, title: str, port: int, mode: str, open_browser: bool,
+                 on_started: Callable[[int], None] | None = None) -> None:
         self._deck = deck
         self._title = title
         self._port = port
         self._mode = mode
         self._open_browser = open_browser
+        self._on_started = on_started
         self._renderer = MarkdownRenderer()
 
     def run(self) -> None:
@@ -33,6 +36,8 @@ class WebServerApp:
             webbrowser.open(url)
 
         print(f"Serving on: {url}")
+        if self._on_started is not None:
+            self._on_started(server.server_port)
         try:
             server.serve_forever()
         except KeyboardInterrupt:
