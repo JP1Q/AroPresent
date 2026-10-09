@@ -13,8 +13,9 @@ function loadSlides() {
         const anims = JSON.parse(savedAnims);
         const pmd = rawSlides.map((s, i) => {
           const anim = anims[i] || 'none none';
-          const prefix = anim === 'none none' ? '' : anim + '\n';
-          return "{\n" + prefix + s + "\n}";
+          // The transition goes on the opening line, e.g. "{ fade none".
+          const opening = anim === 'none none' ? '{' : '{ ' + anim;
+          return opening + '\n' + s + '\n}';
         }).join('\n');
         fetch('/render', { method: 'POST', body: pmd })
           .then(res => res.json())

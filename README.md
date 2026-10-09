@@ -4,21 +4,46 @@ Lightweight markdown-based presentation app for `.pmd` files. Slides are delimit
 
 ## .pmd format
 
-```
+````
 {
 # Title
 
 - Bullet one
 - Bullet two :sparkles:
 }
-{
+{ fade anim-pop
 ## Code
 
 ```python
 print("hello")
 ```
 }
-```
+````
+
+Anything after the `{` sets the slide's transitions: first how the slide appears, then how its items appear one by one.
+
+| Slide transition | Text animation |
+| --- | --- |
+| `fade`, `popup`, `slide-right` | `anim-fade`, `anim-pop`, `anim-right` |
+
+`{ popup` alone sets just the slide transition. With a text animation, each press of space/right arrow reveals the next item before moving to the next slide.
+
+## Commands
+
+Each command goes on its own line inside a slide. Commands inside code blocks are left alone.
+
+| Command | What it does |
+| --- | --- |
+| `\col1`, `\col2`, ... | Start a column; the slide (or box) is split into equal columns. See [Columns](#columns) |
+| `\d` | Start a styled box. See [Styled boxes](#styled-boxes) |
+| `\end` | Close the current box (optional at the end of a slide) |
+| `\fontsize{N}` | Text size in pixels at presentation size (36 is normal) |
+| `\color{red}` | Text color (any CSS color) |
+| `\bg{#222}` | Background color |
+| `\align{center}` | Text alignment: `left`, `center`, `right` |
+| `\style{...}` | Any CSS, e.g. `\style{border: 1px solid; padding: 8px}` |
+
+Style commands apply to the box they're in; outside a box they apply to the current column, or to the whole slide.
 
 ## Emoticons
 
@@ -70,13 +95,7 @@ Normal text again.
 }
 ```
 
-| Command | Effect |
-| --- | --- |
-| `\fontsize{N}` | Text size in presentation pixels (36 is normal); the editor preview scales it to match |
-| `\color{red}` | Text color |
-| `\bg{#222}` | Background |
-| `\align{center}` | Text alignment: `left`, `center`, `right` |
-| `\style{border: 1px solid; padding: 8px}` | Any CSS |
+The style commands are listed under [Commands](#commands).
 
 Boxes can be nested, and `\col1`, `\col2`, ... inside a box split that box into columns.
 
@@ -90,6 +109,8 @@ python main.py
 ## Web editor
 
 Starts the local editor with a slide list, templates, and live preview. Use the Present button to open the presentation view.
+
+Drag the dividers between the panels to resize them; double-click a divider to reset it. Hover the **?** button in the top right for a quick reference of the commands.
 
 ```bash
 python main.py --mode editor

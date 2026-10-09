@@ -18,7 +18,8 @@ function parseConfigs(animStr) {
 function buildPmd() {
   return slides.map((s, i) => {
     const anim = animations[i] || 'none none';
-    const prefix = anim === 'none none' ? '' : anim + '\n';
-    return "{\n" + prefix + s + "\n}";
+    // The transition goes on the opening line, e.g. "{ fade none".
+    const opening = anim === 'none none' ? '{' : '{ ' + anim;
+    return opening + '\n' + s + '\n}';
   }).join('\n');
 }
